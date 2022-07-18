@@ -2,5 +2,4 @@ This is a simple package that copies and alters the behaviour of Flutter’s `Va
 
 ![https://media.giphy.com/media/eImrJKnOmuBDmqXNUj/giphy.gif](https://media.giphy.com/media/eImrJKnOmuBDmqXNUj/giphy.gif)
 
-The idea for the future is improving all notifiers to mimic default iterable’s behaviours and at the same time updating the listeners as efficient as possible. Feel free to make requests or a PR if you have any ideas and/or want to see any specific methods/classes added.
-# notifiers
+The idea for future development evolves around improving all infomrers to mimic default iterable’s behaviours and at the same time updating the listeners as efficient as possible. Feel free to make requests or a PR if you have any ideas and/or want to see any specific methods/classes added.
