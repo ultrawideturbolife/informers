@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended list capabilities.
-class ListNotifier<T> extends ChangeNotifier
+class ListInformer<T> extends ChangeNotifier
     implements ValueListenable<List<T>> {
-  ListNotifier(this._value);
+  ListInformer(this._value);
 
   /// Current list of the informer.
   List<T> _value;
@@ -27,28 +27,41 @@ class ListNotifier<T> extends ChangeNotifier
 
   /// Adds a value to the list.
   void add(T value) {
-    _value = _value..add(value);
+    _value.add(value);
     notifyListeners();
   }
 
   /// Removes a value from the list.
-  void remove(T value) {
-    _value = _value..remove(value);
+  bool remove(T value) {
+    final _result = _value.remove(value);
     notifyListeners();
+    return _result;
   }
 
   /// Removes the last value from the list.
-  void removeLast() {
-    _value = _value..removeLast();
+  T removeLast() {
+    final _removed = _value.removeLast();
     notifyListeners();
+    return _removed;
   }
 
   /// Updates the first value that meets the criteria with given [update].
-  void updateFirstWhere(
-      bool Function(T value) test, T Function(T value) update) {
-    final toBeUpdated = _value.firstWhere(test);
-    final updated = update(toBeUpdated);
-    _value = _value..[_value.indexOf(toBeUpdated)] = updated;
+  T? updateFirstWhereOrNull(
+    bool Function(T value) test,
+    T Function(T value) update,
+  ) {
+    final toBeUpdated = () {
+      for (final element in _value) {
+        if (test(element)) return element;
+      }
+      return null;
+    }();
+    if (toBeUpdated != null) {
+      final updated = update(toBeUpdated);
+      _value[_value.indexOf(toBeUpdated)] = updated;
+      return updated;
+    }
+    return null;
   }
 
   @override

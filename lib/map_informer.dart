@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended map capabilities.
-class MapNotifier<E, T> extends ChangeNotifier
+class MapInformer<E, T> extends ChangeNotifier
     implements ValueListenable<Map<E, T>> {
-  MapNotifier(this._value);
+  MapInformer(this._value);
 
   /// Current map of the informer.
   Map<E, T> _value;
