@@ -1,28 +1,41 @@
 import 'package:flutter/foundation.dart';
+import 'package:informers/inform_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended list capabilities.
-class ListInformer<T> extends ChangeNotifier
-    implements ValueListenable<List<T>> {
-  ListInformer(this._value);
+class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>> {
+  ListInformer(
+    this._value, {
+    bool forceUpdate = true,
+  }) : _forceUpdate = forceUpdate;
 
   /// Current list of the informer.
   List<T> _value;
 
-  @override
 
   /// Getter of the current list of the informer.
+  @override
   List<T> get value => _value;
+
+  /// Indicates whether the informer should always update the value and [notifyListeners] when calling the [update] and [updateCurrent] methods.
+  ///
+  /// Even though the value might be the same.
+  final bool _forceUpdate;
 
   /// Setter of the current list of the informer.
   void update(List<T> value) {
-    _value = value;
-    notifyListeners();
+    if (_forceUpdate || _value != value) {
+      _value = value;
+      notifyListeners();
+    }
   }
 
   /// Provides current list and updates the list of the informer with received list.
-  void updateCurrent(List<T> Function(List<T> value) current) {
-    _value = current(_value);
-    notifyListeners();
+  void updateCurrent(List<T> Function(List<T> current) current) {
+    final newValue = current(_value);
+    if (_forceUpdate || _value != newValue) {
+      _value = newValue;
+      notifyListeners();
+    }
   }
 
   /// Adds a value to the list.

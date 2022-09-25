@@ -1,5 +1,6 @@
 ## 0.0.1+3
 
+* **✨ New:** Added `forceUpdate`
 * Update formatting
 
 ## 0.0.1+2
