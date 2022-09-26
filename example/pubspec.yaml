@@ -29,7 +29,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  veto: ^0.0.1
+#  veto: ^0.0.1+3
+  veto:
+    git:
+      url: https://github.com/codaveto/veto.git
+      ref: feature/dispose-view-model
   informers:
     path: ../
 

@@ -11,7 +11,6 @@ class Informer<T> extends InformNotifier implements ValueListenable<T> {
   /// Current value of the informer.
   T _value;
 
-
   /// Getter of the current value of the informer.
   @override
   T get value => _value;
