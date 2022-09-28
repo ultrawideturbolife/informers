@@ -35,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
                   ListInformerExample(model: model),
                   const SizedBox(height: 24),
                   MapInformerExample(model: model),
+                  const SizedBox(height: kBottomNavigationBarHeight),
                 ],
               ),
             ),
