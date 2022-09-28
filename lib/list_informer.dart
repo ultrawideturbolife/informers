@@ -77,6 +77,12 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
     return null;
   }
 
+  /// Whether the [_value] is empty.
+  bool get isEmpty => _value.isEmpty;
+
+  /// Whether the [_value] is not empty.
+  bool get isNotEmpty => _value.isNotEmpty;
+
   @override
   String toString() => 'ListNotifier{_value: $_value}';
 }

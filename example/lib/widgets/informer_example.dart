@@ -48,81 +48,81 @@ class _InformerExampleState extends State<InformerExample> {
       disposeViewModel: false,
       rebuild: false,
       builder: (context, model) => FeatureExample(
-          title: 'Informer',
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
-              MethodExample(
-                title: '_counter.updateCurrent',
+        title: 'Informer',
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            MethodExample(
+              title: '_counter.updateCurrent',
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: model.decrementCounter,
+                      child: const Text('-'),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: model.counterListenable,
+                          builder: (context, counter, child) => Text(
+                            '_counter: $counter',
+                            textAlign: TextAlign.center,
+                            style: model.exampleTitleStyle,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: model.incrementCounter,
+                      child: const Text('+'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            MethodExample(
+              title: '_counter.update',
+              child: Transform.translate(
+                offset: const Offset(0, -4),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ElevatedButton(
-                        onPressed: model.decrementCounter,
-                        child: const Text('-'),
-                      ),
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: ValueListenableBuilder<int>(
-                              valueListenable: model.counterListenable,
-                              builder: (context, counter, child) => Text(
-                                    '_counter: $counter',
-                                    textAlign: TextAlign.center,
-                                    style: model.textTheme.bodyText1!
-                                        .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                                  )),
+                        child: ValueListenableBuilder<String?>(
+                          valueListenable: _counterErrorText,
+                          builder: (context, counterErrorText, child) => TextField(
+                            controller: _informerUpdateController,
+                            decoration: InputDecoration(
+                              errorText: counterErrorText,
+                              labelText: 'New counter value',
+                              alignLabelWithHint: true,
+                            ),
+                            onSubmitted: (value) => _tryUpdateInformer(model),
+                          ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: model.incrementCounter,
-                        child: const Text('+'),
+                      const SizedBox(width: 16),
+                      Transform.translate(
+                        offset: const Offset(0, 12),
+                        child: ElevatedButton(
+                          onPressed: () => _tryUpdateInformer(model),
+                          child: const Text('Update'),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              MethodExample(
-                title: '_counter.update',
-                child: Transform.translate(
-                  offset: const Offset(0, -4),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ValueListenableBuilder<String?>(
-                            valueListenable: _counterErrorText,
-                            builder: (context, counterErrorText, child) => TextField(
-                              controller: _informerUpdateController,
-                              decoration: InputDecoration(
-                                errorText: counterErrorText,
-                                labelText: 'New counter value',
-                                alignLabelWithHint: true,
-                              ),
-                              onSubmitted: (value) => _tryUpdateInformer(model),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Transform.translate(
-                          offset: const Offset(0, 12),
-                          child: ElevatedButton(
-                            onPressed: () => _tryUpdateInformer(model),
-                            child: const Text('Update'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
       viewModelBuilder: () => widget.model,
     );
   }
