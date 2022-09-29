@@ -49,5 +49,31 @@ class HomeViewModel extends BaseViewModel {
         fontWeight: FontWeight.bold,
       );
 
+  void addListItem({required String value}) => _listItems.add(value);
+
+  bool removeListItem({required String value}) {
+    if (_listItems.contains(value)) {
+      _listItems.remove(value);
+      return true;
+    }
+    return false;
+  }
+
+  void removeLast() {
+    if (_listItems.isNotEmpty) {
+      _listItems.removeLast();
+    }
+  }
+
   static HomeViewModel get locate => HomeViewModel();
+
+  bool updateFirstWhereOrNull({
+    required String testValue,
+    required String updateValue,
+  }) =>
+      _listItems.updateFirstWhereOrNull(
+        (value) => value == testValue,
+        (_) => updateValue,
+      ) !=
+      null;
 }
