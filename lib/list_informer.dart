@@ -11,7 +11,6 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
   /// Current list of the informer.
   List<T> _value;
 
-
   /// Getter of the current list of the informer.
   @override
   List<T> get value => _value;
@@ -63,15 +62,19 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
     bool Function(T value) test,
     T Function(T value) update,
   ) {
-    final toBeUpdated = () {
-      for (final element in _value) {
-        if (test(element)) return element;
+    int? _index;
+    T? toBeUpdated;
+    for (int index = 0; index < _value.length; index++) {
+      final value = _value[index];
+      if (test(value)) {
+        _index = index;
+        toBeUpdated = value;
       }
-      return null;
-    }();
+    }
     if (toBeUpdated != null) {
       final updated = update(toBeUpdated);
-      _value[_value.indexOf(toBeUpdated)] = updated;
+      _value[_index!] = updated;
+      notifyListeners();
       return updated;
     }
     return null;
@@ -82,6 +85,9 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
 
   /// Whether the [_value] is not empty.
   bool get isNotEmpty => _value.isNotEmpty;
+
+  /// Whether the [_value] contains [value].
+  bool contains(T value) => _value.contains(value);
 
   @override
   String toString() => 'ListNotifier{_value: $_value}';

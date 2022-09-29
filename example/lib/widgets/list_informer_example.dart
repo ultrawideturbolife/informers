@@ -20,27 +20,73 @@ class ListInformerExample extends StatefulWidget {
 }
 
 class _ListInformerExampleState extends State<ListInformerExample> {
-  final _listInformerUpdateController = TextEditingController();
-  final Informer<String?> _listInformerErrorText = Informer(null, forceUpdate: false);
+  final _updateController = TextEditingController();
+  final _addController = TextEditingController();
+  final _removeController = TextEditingController();
+  final _firstWhereTestController = TextEditingController();
+  final _firstWhereUpdateController = TextEditingController();
+  final _removeFocusNode = FocusNode();
+  final _firstWhereUpdatedFocusNode = FocusNode();
+  final Informer<String?> _removeErrorText = Informer(null, forceUpdate: false);
+  final Informer<String?> _firstWhereErrorText = Informer(null, forceUpdate: false);
 
   @override
   void dispose() {
-    _listInformerUpdateController.dispose();
-    _listInformerErrorText.dispose();
+    _updateController.dispose();
+    _addController.dispose();
+    _removeController.dispose();
+    _firstWhereTestController.dispose();
+    _firstWhereUpdateController.dispose();
+    _removeFocusNode.dispose();
+    _firstWhereUpdatedFocusNode.dispose();
+    _removeErrorText.dispose();
     super.dispose();
   }
 
-  void _tryUpdateListInformer(HomeViewModel model) {
-    final List<String> values;
-    try {
-      values =
-          _listInformerUpdateController.text.split(',').map((e) => e.toString().trim()).toList();
-      model.updateListItems(values: values);
-      _listInformerUpdateController.clear();
-      _listInformerErrorText.update(null);
+  void _tryUpdate(HomeViewModel model) {
+    final value = _updateController.text;
+    if (value.isNotEmpty) {
+      model.updateListItems(
+        values: value.split(',').map((e) => e.toString().trim()).toList(),
+      );
+      _updateController.clear();
       model.focusNode.unfocus();
-    } catch (e) {
-      _listInformerErrorText.update('Strings only, yo');
+    }
+  }
+
+  void _tryAdd(HomeViewModel model) {
+    final value = _addController.text;
+    if (value.isNotEmpty) {
+      model.addListItem(value: value);
+      _removeController.text = value;
+      _addController.clear();
+      model.focusNode.unfocus();
+      _removeFocusNode.requestFocus();
+    }
+  }
+
+  void _tryRemove(HomeViewModel model) {
+    final success = model.removeListItem(value: _removeController.text);
+    if (success) {
+      _removeController.clear();
+      _removeErrorText.update(null);
+      model.focusNode.unfocus();
+    } else {
+      _removeErrorText.update('Value not in the list, yo');
+    }
+  }
+
+  void _tryUpdateFirstWhereOrNull(HomeViewModel model) {
+    final testValue = _firstWhereTestController.text;
+    final updateValue = _firstWhereUpdateController.text;
+    final success = model.updateFirstWhereOrNull(testValue: testValue, updateValue: updateValue);
+    if (success) {
+      _firstWhereTestController.clear();
+      _firstWhereUpdateController.clear();
+      _firstWhereErrorText.update(null);
+      model.focusNode.unfocus();
+    } else {
+      _firstWhereErrorText.update('Value not found, yo');
     }
   }
 
@@ -65,21 +111,17 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                         final listItemsIsEmpty = listItems.isEmpty;
                         return Column(
                           children: [
-                            Text(
-                              '$listItems',
-                              style: model.exampleTitleStyle,
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                '$listItems',
+                                style: model.exampleTitleStyle,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             Row(
                               children: [
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: model.incrementListItems,
-                                    child: const Text('ADD'),
-                                  ),
-                                ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: AnimatedOpacity(
@@ -97,10 +139,17 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                                             color: Colors.white,
                                           ),
                                           duration: ConstDurations.defaultAnimationDuration,
-                                          child: const Text('REMOVE'),
+                                          child: const Text('-'),
                                         ),
                                       ),
                                     ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: model.incrementListItems,
+                                    child: const Text('+'),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -124,24 +173,20 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: ValueListenableBuilder<String?>(
-                            valueListenable: _listInformerErrorText,
-                            builder: (context, counterErrorText, child) => TextField(
-                              controller: _listInformerUpdateController,
-                              decoration: InputDecoration(
-                                errorText: counterErrorText,
-                                labelText: 'New listItems values',
-                                alignLabelWithHint: true,
-                              ),
-                              onSubmitted: (value) => _tryUpdateListInformer(model),
+                          child: TextField(
+                            controller: _updateController,
+                            decoration: const InputDecoration(
+                              labelText: 'Update listItems values',
+                              alignLabelWithHint: true,
                             ),
+                            onSubmitted: (value) => _tryUpdate(model),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Transform.translate(
                           offset: const Offset(0, 12),
                           child: ElevatedButton(
-                            onPressed: () => _tryUpdateListInformer(model),
+                            onPressed: () => _tryUpdate(model),
                             child: const Text('Update'),
                           ),
                         ),
@@ -149,7 +194,157 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                     ),
                   ),
                 ),
-              )
+              ),
+              const SizedBox(height: 24),
+              MethodExample(
+                title: '_listItems.add',
+                child: Transform.translate(
+                  offset: const Offset(0, -4),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _addController,
+                            decoration: const InputDecoration(
+                              labelText: 'Add listItems value',
+                              alignLabelWithHint: true,
+                            ),
+                            onSubmitted: (_) => _tryAdd(model),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Transform.translate(
+                          offset: const Offset(0, 12),
+                          child: ElevatedButton(
+                            onPressed: () => _tryAdd(model),
+                            child: const Text('Add'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              MethodExample(
+                title: '_listItems.remove',
+                child: Transform.translate(
+                  offset: const Offset(0, -4),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ValueListenableBuilder<String?>(
+                            valueListenable: _removeErrorText,
+                            builder: (context, removeErrorText, child) => TextField(
+                              controller: _removeController,
+                              focusNode: _removeFocusNode,
+                              decoration: InputDecoration(
+                                labelText: 'Remove listItems value',
+                                errorText: removeErrorText,
+                                alignLabelWithHint: true,
+                              ),
+                              onSubmitted: (_) => _tryRemove(model),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Transform.translate(
+                          offset: const Offset(0, 12),
+                          child: ElevatedButton(
+                            onPressed: () => _tryRemove(model),
+                            child: const Text('Remove'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              MethodExample(
+                title: '_listItems.removeLast',
+                child: Transform.translate(
+                  offset: const Offset(0, -4),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ValueListenableBuilder<List<String>>(
+                            valueListenable: model.listItemsListenable,
+                            builder: (context, listItems, child) => AnimatedOpacity(
+                              duration: ConstDurations.defaultAnimationDuration,
+                              opacity: listItems.isEmpty ? 0.3 : 1,
+                              child: IgnorePointer(
+                                ignoring: listItems.isEmpty,
+                                child: ElevatedButton(
+                                  onPressed: model.removeLast,
+                                  child: const Text('Remove last'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              MethodExample(
+                title: '_listItems.updateFirstWhereOrNull',
+                child: Transform.translate(
+                  offset: const Offset(0, -4),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ValueListenableBuilder<List<String>>(
+                          valueListenable: model.listItemsListenable,
+                          builder: (context, listItems, child) => Text(
+                            '$listItems',
+                            style: model.exampleTitleStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ValueListenableBuilder<String?>(
+                          valueListenable: _firstWhereErrorText,
+                          builder: (context, removeErrorText, child) => TextField(
+                            controller: _firstWhereTestController,
+                            decoration: InputDecoration(
+                              labelText: 'Value to be updated',
+                              errorText: removeErrorText,
+                              alignLabelWithHint: true,
+                            ),
+                            onSubmitted: (_) => _firstWhereUpdatedFocusNode.requestFocus(),
+                          ),
+                        ),
+                        TextField(
+                          controller: _firstWhereUpdateController,
+                          focusNode: _firstWhereUpdatedFocusNode,
+                          decoration: const InputDecoration(
+                            labelText: 'Updated value',
+                            alignLabelWithHint: true,
+                          ),
+                          onSubmitted: (_) => _tryUpdateFirstWhereOrNull(model),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: () => _tryUpdateFirstWhereOrNull(model),
+                          child: const Text('Update'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
