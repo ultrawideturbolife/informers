@@ -38,6 +38,8 @@ class HomeViewModel extends BaseViewModel {
   void incrementListItems() =>
       _listItems.updateCurrent((value) => value..add(_randomGangstaLoremIpsum));
 
+  void updateListItems({required List<String> values}) => _listItems.update(values);
+
   String get _randomGangstaLoremIpsum => ConstValues.randomGangstaLoremIpsum[random.nextInt(
         ConstValues.randomGangstaLoremIpsum.length,
       )];

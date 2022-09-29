@@ -2,17 +2,47 @@ import 'package:example/data/constants/const_durations.dart';
 import 'package:example/widgets/feature_example.dart';
 import 'package:example/widgets/method_example.dart';
 import 'package:flutter/material.dart';
+import 'package:informers/informer.dart';
 import 'package:veto/base_view_model.dart';
 
 import '../views/home_view_model.dart';
 
-class ListInformerExample extends StatelessWidget {
+class ListInformerExample extends StatefulWidget {
   const ListInformerExample({
     required this.model,
     super.key,
   });
 
   final HomeViewModel model;
+
+  @override
+  State<ListInformerExample> createState() => _ListInformerExampleState();
+}
+
+class _ListInformerExampleState extends State<ListInformerExample> {
+  final _listInformerUpdateController = TextEditingController();
+  final Informer<String?> _listInformerErrorText = Informer(null, forceUpdate: false);
+
+  @override
+  void dispose() {
+    _listInformerUpdateController.dispose();
+    _listInformerErrorText.dispose();
+    super.dispose();
+  }
+
+  void _tryUpdateListInformer(HomeViewModel model) {
+    final List<String> values;
+    try {
+      values =
+          _listInformerUpdateController.text.split(',').map((e) => e.toString().trim()).toList();
+      model.updateListItems(values: values);
+      _listInformerUpdateController.clear();
+      _listInformerErrorText.update(null);
+      model.focusNode.unfocus();
+    } catch (e) {
+      _listInformerErrorText.update('Strings only, yo');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +113,48 @@ class ListInformerExample extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 24),
+              MethodExample(
+                title: '_listItems.update',
+                child: Transform.translate(
+                  offset: const Offset(0, -4),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ValueListenableBuilder<String?>(
+                            valueListenable: _listInformerErrorText,
+                            builder: (context, counterErrorText, child) => TextField(
+                              controller: _listInformerUpdateController,
+                              decoration: InputDecoration(
+                                errorText: counterErrorText,
+                                labelText: 'New listItems values',
+                                alignLabelWithHint: true,
+                              ),
+                              onSubmitted: (value) => _tryUpdateListInformer(model),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Transform.translate(
+                          offset: const Offset(0, 12),
+                          child: ElevatedButton(
+                            onPressed: () => _tryUpdateListInformer(model),
+                            child: const Text('Update'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         );
       },
-      viewModelBuilder: () => model,
+      viewModelBuilder: () => widget.model,
     );
   }
 }
