@@ -100,7 +100,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
           title: 'ListInformer',
           child: Column(
             children: [
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.updateCurrent',
                 child: Column(
@@ -125,7 +125,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: AnimatedOpacity(
-                                    duration: ConstDurations.defaultAnimationDuration,
+                                    duration: ConstDurations.halfDefaultAnimationDuration,
                                     opacity: listItemsIsEmpty ? 0.3 : 1,
                                     child: IgnorePointer(
                                       ignoring: listItemsIsEmpty,
@@ -138,7 +138,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                                                 : TextDecoration.none,
                                             color: Colors.white,
                                           ),
-                                          duration: ConstDurations.defaultAnimationDuration,
+                                          duration: ConstDurations.halfDefaultAnimationDuration,
                                           child: const Text('-'),
                                         ),
                                       ),
@@ -162,7 +162,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.update',
                 child: Transform.translate(
@@ -195,7 +195,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.add',
                 child: Transform.translate(
@@ -228,7 +228,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.remove',
                 child: Transform.translate(
@@ -266,7 +266,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.removeLast',
                 child: Transform.translate(
@@ -279,7 +279,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                           child: ValueListenableBuilder<List<String>>(
                             valueListenable: model.listItemsListenable,
                             builder: (context, listItems, child) => AnimatedOpacity(
-                              duration: ConstDurations.defaultAnimationDuration,
+                              duration: ConstDurations.halfDefaultAnimationDuration,
                               opacity: listItems.isEmpty ? 0.3 : 1,
                               child: IgnorePointer(
                                 ignoring: listItems.isEmpty,
@@ -296,7 +296,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               MethodExample(
                 title: '_listItems.updateFirstWhereOrNull',
                 child: Transform.translate(
@@ -335,7 +335,7 @@ class _ListInformerExampleState extends State<ListInformerExample> {
                           ),
                           onSubmitted: (_) => _tryUpdateFirstWhereOrNull(model),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () => _tryUpdateFirstWhereOrNull(model),
                           child: const Text('Update'),
