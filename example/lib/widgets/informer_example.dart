@@ -51,7 +51,7 @@ class _InformerExampleState extends State<InformerExample> {
         title: 'Informer',
         child: Column(
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             MethodExample(
               title: '_counter.updateCurrent',
               child: Padding(

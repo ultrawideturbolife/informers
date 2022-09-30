@@ -29,11 +29,9 @@ class _HomeViewState extends State<HomeView> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   InformerExample(model: model),
-                  const SizedBox(height: 24),
                   ListInformerExample(model: model),
-                  const SizedBox(height: 24),
                   MapInformerExample(model: model),
                   const SizedBox(height: kBottomNavigationBarHeight),
                 ],
