@@ -12,7 +12,9 @@ class HomeViewModel extends BaseViewModel {
 
   final ListInformer<String> _listItems = ListInformer([]);
   ValueListenable<List<String>> get listItemsListenable => _listItems;
-  List<String> get listItems => _listItems.value;
+
+  final MapInformer<String, String> _mapItems = MapInformer({});
+  ValueListenable<Map<String, String>> get mapItemsListenable => _mapItems;
 
   late final random = Random();
 
@@ -24,30 +26,26 @@ class HomeViewModel extends BaseViewModel {
   @override
   void dispose() {
     _counter.dispose();
+    _listItems.dispose();
     super.dispose();
   }
 
-  void updateInformer({required int value}) => _counter.update(value);
+  // -------- Informer ---- Informer ---- Informer -------- \\
+
+  void updateCounter({required int value}) => _counter.update(value);
 
   void decrementCounter() => _counter.updateCurrent((value) => --value);
 
   void incrementCounter() => _counter.updateCurrent((value) => ++value);
 
+  // -------- ListInformer ---- ListInformer ---- ListInformer -------- \\
+
+  void updateListItems({required List<String> values}) => _listItems.update(values);
+
   void decrementListItems() => _listItems.updateCurrent((value) => value..removeLast());
 
   void incrementListItems() =>
       _listItems.updateCurrent((value) => value..add(_randomGangstaLoremIpsum));
-
-  void updateListItems({required List<String> values}) => _listItems.update(values);
-
-  String get _randomGangstaLoremIpsum => ConstValues.randomGangstaLoremIpsum[random.nextInt(
-        ConstValues.randomGangstaLoremIpsum.length,
-      )];
-
-  TextStyle get exampleTitleStyle => Theme.of(context).textTheme.bodyText1!.copyWith(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      );
 
   void addListItem({required String value}) => _listItems.add(value);
 
@@ -59,13 +57,11 @@ class HomeViewModel extends BaseViewModel {
     return false;
   }
 
-  void removeLast() {
+  void removeLastListItem() {
     if (_listItems.isNotEmpty) {
       _listItems.removeLast();
     }
   }
-
-  static HomeViewModel get locate => HomeViewModel();
 
   bool updateFirstWhereOrNull({
     required String testValue,
@@ -76,4 +72,35 @@ class HomeViewModel extends BaseViewModel {
         (_) => updateValue,
       ) !=
       null;
+
+  // -------- MapInformer ---- MapInformer ---- MapInformer -------- \\
+
+  void updateMapItems({required Map<String, String> values}) => _mapItems.update(values);
+
+  void updateMapItemsKey({required String key, required String value}) =>
+      _mapItems.updateKey(key, (_) => value, ifAbsent: () => value);
+
+  void decrementMapItems() {
+    print('''[🐛] [DEBUG] [🌟] [HomeViewModel.decrementMapItems] [📞] I was called''');
+  }
+
+  void incrementMapItems() {
+    print('''[🐛] [DEBUG] [🌟] [HomeViewModel.incrementMapItems] [📞] I was called''');
+  }
+
+
+  // -------- UTIL ---- UTIL ---- UTIL -------- \\
+
+  String get _randomGangstaLoremIpsum => ConstValues.randomGangstaLoremIpsum[random.nextInt(
+        ConstValues.randomGangstaLoremIpsum.length,
+      )];
+
+  TextStyle get exampleTitleStyle => Theme.of(context).textTheme.bodyText1!.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      );
+
+  static HomeViewModel get locate => HomeViewModel();
+
+
 }
