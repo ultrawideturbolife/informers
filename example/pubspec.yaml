@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  veto: ^0.0.1+4
+  veto: ^0.0.1+6
   informers:
     path: ../
 

@@ -51,6 +51,13 @@ class MapInformer<E, T> extends InformNotifier implements ValueListenable<Map<E,
     notifyListeners();
   }
 
+  /// Removes [key] from [_value].
+  T? remove(E key) {
+    final removed = _value.remove(key);
+    notifyListeners();
+    return removed;
+  }
+
   /// Performs a [Map.putIfAbsent] and returns its return value.
   T putIfAbsent(E key, T value) {
     final _returnValue = _value.putIfAbsent(key, () => value);

@@ -1,11 +1,12 @@
 import 'package:example/data/constants/const_durations.dart';
-import 'package:example/widgets/custom_button.dart';
-import 'package:example/widgets/shrink.dart';
+import 'package:example/widgets/util/shrink.dart';
 import 'package:flutter/material.dart';
 
+import '../util/custom_button.dart';
+
 /// Holds a title and feature example widget.
-class FeatureExample extends StatelessWidget {
-  FeatureExample({
+class FeatureExample extends StatefulWidget {
+  const FeatureExample({
     required this.title,
     required this.child,
     super.key,
@@ -14,7 +15,18 @@ class FeatureExample extends StatelessWidget {
   final String title;
   final Widget child;
 
+  @override
+  State<FeatureExample> createState() => _FeatureExampleState();
+}
+
+class _FeatureExampleState extends State<FeatureExample> {
   final ValueNotifier<bool> _isExpandedNotifier = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _isExpandedNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +53,11 @@ class FeatureExample extends StatelessWidget {
                     const SizedBox(width: 32),
                     Expanded(
                       child: Text(
-                        title,
+                        widget.title,
                         style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -69,7 +81,7 @@ class FeatureExample extends StatelessWidget {
             valueListenable: _isExpandedNotifier,
             builder: (context, isExpanded, _) => VerticalShrink.showHide(
               show: isExpanded,
-              showChild: child,
+              showChild: widget.child,
               alignment: Alignment.topCenter,
             ),
           )

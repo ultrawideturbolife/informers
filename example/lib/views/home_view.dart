@@ -1,9 +1,9 @@
-import 'package:example/widgets/informer_example.dart';
-import 'package:example/widgets/map_informer_example.dart';
+import 'package:example/widgets/example_implementations/informer_example.dart';
+import 'package:example/widgets/example_implementations/map_informer_example.dart';
 import 'package:flutter/material.dart';
 import 'package:veto/base_view_model.dart';
 
-import '../widgets/list_informer_example.dart';
+import '../widgets/example_implementations/list_informer_example.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,7 +18,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>(
-      rebuild: false,
       builder: (context, model) {
         return GestureDetector(
           onTap: model.focusNode.unfocus,
