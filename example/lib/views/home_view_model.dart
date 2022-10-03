@@ -75,19 +75,26 @@ class HomeViewModel extends BaseViewModel {
 
   // -------- MapInformer ---- MapInformer ---- MapInformer -------- \\
 
+  void addMapItem({required String key, required String value}) => _mapItems.add(key, value);
+
+  bool removeMapItem({required String key}) => _mapItems.remove(key) != null;
+
   void updateMapItems({required Map<String, String> values}) => _mapItems.update(values);
 
   void updateMapItemsKey({required String key, required String value}) =>
       _mapItems.updateKey(key, (_) => value, ifAbsent: () => value);
 
-  void decrementMapItems() {
-    print('''[🐛] [DEBUG] [🌟] [HomeViewModel.decrementMapItems] [📞] I was called''');
-  }
+  void decrementMapItems() => _mapItems.updateCurrent(
+        (current) => current..remove(_mapItems.value.keys.last),
+      );
 
   void incrementMapItems() {
-    print('''[🐛] [DEBUG] [🌟] [HomeViewModel.incrementMapItems] [📞] I was called''');
+    _mapItems
+        .updateCurrent((current) => current..[_randomGangstaLoremIpsum] = _randomGangstaLoremIpsum);
   }
 
+  String putIfAbsent({required String key, required String value}) =>
+      _mapItems.putIfAbsent(key, value);
 
   // -------- UTIL ---- UTIL ---- UTIL -------- \\
 
@@ -101,6 +108,4 @@ class HomeViewModel extends BaseViewModel {
       );
 
   static HomeViewModel get locate => HomeViewModel();
-
-
 }

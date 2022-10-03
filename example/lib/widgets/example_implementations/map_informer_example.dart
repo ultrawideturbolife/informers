@@ -24,6 +24,7 @@ class _MapInformerExampleState extends State<MapInformerExample> {
 
   final _removeFocusNode = FocusNode();
   final _updateKeyValuedFocusNode = FocusNode();
+  final _putIfAbsentValueFocusNode = FocusNode();
   final Informer<String?> _updateErrorText = Informer(null, forceUpdate: false);
   final Informer<String?> _removeErrorText = Informer(null, forceUpdate: false);
   final Informer<String?> _updateKeyErrorText = Informer(null, forceUpdate: false);
@@ -33,6 +34,7 @@ class _MapInformerExampleState extends State<MapInformerExample> {
     _controllerBox.dispose();
     _removeFocusNode.dispose();
     _updateKeyValuedFocusNode.dispose();
+    _putIfAbsentValueFocusNode.dispose();
     _updateErrorText.dispose();
     _removeErrorText.dispose();
     _updateKeyErrorText.dispose();
@@ -66,7 +68,8 @@ class _MapInformerExampleState extends State<MapInformerExample> {
   void _tryAdd(HomeViewModel model) {
     final value = _controllerBox.get(#add).text;
     if (value.isNotEmpty) {
-      widget.model.addListItem(value: value);
+      final valueSplit = value.split(':');
+      widget.model.addMapItem(key: valueSplit.first, value: valueSplit.last);
       _controllerBox.get(#remove).text = value;
       _controllerBox.get(#add).clear();
       widget.model.focusNode.unfocus();
@@ -75,7 +78,7 @@ class _MapInformerExampleState extends State<MapInformerExample> {
   }
 
   void _tryRemove(HomeViewModel model) {
-    final success = widget.model.removeListItem(value: _controllerBox.get(#remove).text);
+    final success = widget.model.removeMapItem(key: _controllerBox.get(#remove).text);
     if (success) {
       _controllerBox.get(#remove).clear();
       _removeErrorText.update(null);
@@ -92,6 +95,20 @@ class _MapInformerExampleState extends State<MapInformerExample> {
     _controllerBox.get(#updateKeyKey).clear();
     _controllerBox.get(#updateKeyValue).clear();
     _updateKeyErrorText.update(null);
+    widget.model.focusNode.unfocus();
+  }
+
+  void _putIfAbsent(HomeViewModel model) {
+    final key = _controllerBox.get(#putIfAbsentKeyKey).text;
+    final value = _controllerBox.get(#putIfAbsentKeyValue).text;
+    final containedKey = widget.model.mapItemsListenable.value.containsKey(key);
+    final currentValue = widget.model.putIfAbsent(key: key, value: value);
+    if (containedKey) {
+      _controllerBox.get(#putIfAbsentKeyValue).text = currentValue;
+    } else {
+      _controllerBox.get(#putIfAbsentKeyKey).clear();
+      _controllerBox.get(#putIfAbsentKeyValue).clear();
+    }
     widget.model.focusNode.unfocus();
   }
 
@@ -269,37 +286,7 @@ class _MapInformerExampleState extends State<MapInformerExample> {
           ),
           const SizedBox(height: 16),
           MethodExample(
-            title: '_mapItems.removeLast',
-            child: Transform.translate(
-              offset: const Offset(0, -4),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ValueListenableBuilder<Map<String, String>>(
-                        valueListenable: widget.model.mapItemsListenable,
-                        builder: (context, mapItems, child) => AnimatedOpacity(
-                          duration: ConstDurations.halfDefaultAnimationDuration,
-                          opacity: mapItems.isEmpty ? 0.3 : 1,
-                          child: IgnorePointer(
-                            ignoring: mapItems.isEmpty,
-                            child: ElevatedButton(
-                              onPressed: widget.model.removeLastListItem,
-                              child: const Text('Remove last'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          MethodExample(
-            title: '_mapItems.updateMapItemsKey',
+            title: '_mapItems.updateKey',
             child: Transform.translate(
               offset: const Offset(0, -4),
               child: Padding(
@@ -320,7 +307,7 @@ class _MapInformerExampleState extends State<MapInformerExample> {
                       builder: (context, removeErrorText, child) => TextField(
                         controller: _controllerBox.get(#updateKeyKey),
                         decoration: InputDecoration(
-                          labelText: 'Value to be updated',
+                          labelText: 'Key to be updated',
                           errorText: removeErrorText,
                           alignLabelWithHint: true,
                         ),
@@ -339,6 +326,51 @@ class _MapInformerExampleState extends State<MapInformerExample> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => _updateKey(widget.model),
+                      child: const Text('Update'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          MethodExample(
+            title: '_mapItems.putIfAbsent',
+            child: Transform.translate(
+              offset: const Offset(0, -4),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ValueListenableBuilder<Map<String, String>>(
+                      valueListenable: widget.model.mapItemsListenable,
+                      builder: (context, mapItems, child) => Text(
+                        '$mapItems',
+                        style: widget.model.exampleTitleStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    TextField(
+                      controller: _controllerBox.get(#putIfAbsentKeyKey),
+                      decoration: const InputDecoration(
+                        labelText: 'Key to be put',
+                        alignLabelWithHint: true,
+                      ),
+                      onSubmitted: (_) => _putIfAbsentValueFocusNode.requestFocus(),
+                    ),
+                    TextField(
+                      controller: _controllerBox.get(#putIfAbsentKeyValue),
+                      focusNode: _putIfAbsentValueFocusNode,
+                      decoration: const InputDecoration(
+                        labelText: 'Put value',
+                        alignLabelWithHint: true,
+                      ),
+                      onSubmitted: (_) => _putIfAbsent(widget.model),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => _putIfAbsent(widget.model),
                       child: const Text('Update'),
                     ),
                   ],
