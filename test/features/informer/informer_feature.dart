@@ -3,13 +3,7 @@ import 'package:gherkin_unit_test/gherkin_unit_test.dart';
 import 'package:informers/informer.dart';
 import 'package:mockito/mockito.dart';
 
-void main() {
-  InformerFeature().test();
-}
-
-class _Mock extends Mock {
-  void notifyListeners();
-}
+import '../../mocks/notify_mock.dart';
 
 class InformerFeature extends UnitFeature<Informer> {
   InformerFeature()
@@ -17,7 +11,7 @@ class InformerFeature extends UnitFeature<Informer> {
           description: 'Informer',
           scenarios: [
             UnitScenario(
-              systemUnderTest: (mocks) => Informer(null),
+              systemUnderTest: (_) => Informer(null),
               examples: [
                 const UnitExample(values: [0, 1]),
                 const UnitExample(values: [10, 100]),
@@ -29,8 +23,9 @@ class InformerFeature extends UnitFeature<Informer> {
                 Given(
                   'the informer value is at starting value',
                   (systemUnderTest, log, box, mocks, [example]) {
-                    systemUnderTest.update(example!.firstValue());
-                    expect(systemUnderTest.value != null, true);
+                    final startingValue = example!.firstValue();
+                    systemUnderTest.update(startingValue);
+                    expect(systemUnderTest.value, startingValue);
                   },
                 ),
                 When(
@@ -65,7 +60,7 @@ class InformerFeature extends UnitFeature<Informer> {
                   (systemUnderTest, log, box, mocks, [example]) {
                     final startingValue = example!.firstValue();
                     systemUnderTest.update(startingValue);
-                    expect(systemUnderTest.value != null, true);
+                    expect(systemUnderTest.value, startingValue);
                     box.write(#startingValue, startingValue);
                   },
                 ),
@@ -97,12 +92,12 @@ class InformerFeature extends UnitFeature<Informer> {
               systemUnderTest: (mocks) => Informer(null, forceUpdate: false),
               description: 'Using the Informer.update method without forceUpdate',
               setUpEach: (mocks, systemUnderTest) {
-                final mock = _Mock();
+                final mock = NotifyMock();
                 systemUnderTest.addListener(mock.notifyListeners);
                 mocks.write(mock);
               },
               tearDownEach: (mocks, systemUnderTest) =>
-                  systemUnderTest.removeListener(mocks.read<_Mock>(_Mock).notifyListeners),
+                  systemUnderTest.removeListener(mocks.read<NotifyMock>(NotifyMock).notifyListeners),
               steps: [
                 Given(
                   'the informer value is at starting value',
@@ -119,7 +114,7 @@ class InformerFeature extends UnitFeature<Informer> {
                   (systemUnderTest, log, box, mocks, [example]) {
                     final newValue = example.secondValue();
                     systemUnderTest.update(newValue);
-                    verify(mocks.read<_Mock>(_Mock).notifyListeners())
+                    verify(mocks.read<NotifyMock>(NotifyMock).notifyListeners())
                         .called(box.read<int>(#startingValue) != newValue ? 2 : 1);
                   },
                 )
@@ -133,12 +128,12 @@ class InformerFeature extends UnitFeature<Informer> {
               systemUnderTest: (mocks) => Informer(null, forceUpdate: false),
               description: 'Using the Informer.updateCurrent method without forceUpdate',
               setUpEach: (mocks, systemUnderTest) {
-                final mock = _Mock();
+                final mock = NotifyMock();
                 systemUnderTest.addListener(mock.notifyListeners);
                 mocks.write(mock);
               },
               tearDownEach: (mocks, systemUnderTest) =>
-                  systemUnderTest.removeListener(mocks.read<_Mock>(_Mock).notifyListeners),
+                  systemUnderTest.removeListener(mocks.read<NotifyMock>(NotifyMock).notifyListeners),
               steps: [
                 Given(
                   'the informer value is at starting value',
@@ -156,7 +151,7 @@ class InformerFeature extends UnitFeature<Informer> {
                   (systemUnderTest, log, box, mocks, [example]) {
                     final addedValue = example.secondValue();
                     systemUnderTest.updateCurrent((value) => value + addedValue);
-                    verify(mocks.read<_Mock>(_Mock).notifyListeners())
+                    verify(mocks.read<NotifyMock>(NotifyMock).notifyListeners())
                         .called(box.read<int>(#startingValue) != addedValue ? 2 : 1);
                   },
                 )

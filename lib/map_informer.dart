@@ -66,5 +66,7 @@ class MapInformer<E, T> extends InformNotifier implements ValueListenable<Map<E,
   }
 
   @override
-  String toString() => 'MapNotifier{_value: $_value}';
+  String toString() {
+    return 'MapInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
+  }
 }
