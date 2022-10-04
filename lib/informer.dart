@@ -38,5 +38,7 @@ class Informer<T> extends InformNotifier implements ValueListenable<T> {
   }
 
   @override
-  String toString() => 'Notifier{_value: $_value}';
+  String toString() {
+    return 'Informer{_value: $_value, _forceUpdate: $_forceUpdate}';
+  }
 }

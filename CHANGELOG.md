@@ -1,6 +1,6 @@
 ## 0.0.1+3
 
-* Added example project and unit tests
+* Added example project and unit tests.
 
 * **✨ New:** Added `forceUpdate`
 * Update formatting

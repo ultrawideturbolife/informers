@@ -90,5 +90,7 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
   bool contains(T value) => _value.contains(value);
 
   @override
-  String toString() => 'ListNotifier{_value: $_value}';
+  String toString() {
+    return 'ListInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
+  }
 }
