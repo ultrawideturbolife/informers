@@ -89,6 +89,12 @@ class ListInformer<T> extends InformNotifier implements ValueListenable<List<T>>
   /// Whether the [_value] contains [value].
   bool contains(T value) => _value.contains(value);
 
+  /// Clears [_value] of any values.
+  void clear() {
+    _value.clear();
+    notifyListeners();
+  }
+
   @override
   String toString() {
     return 'ListInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
