@@ -5,13 +5,15 @@ import 'features/informer/list_informer_feature.dart';
 
 void main() {
   NotifiersTest().test();
-
 }
 
 class NotifiersTest extends UnitTest {
   NotifiersTest()
-      : super(description: 'All tests of the Informer package', features: [
-        InformerFeature(),
-        ListInformerFeature(),
-  ]);
+      : super(
+          description: 'All tests of the Informer package',
+          features: [
+            InformerFeature(),
+            ListInformerFeature(),
+          ],
+        );
 }

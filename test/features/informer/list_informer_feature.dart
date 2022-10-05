@@ -10,7 +10,7 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
       : super(
           description: 'ListInformer',
           systemUnderTest: (_) => ListInformer([]),
-          setUpEach: (mocks, systemUnderTest) => systemUnderTest!.update([]),
+          setUpEach: (mocks, systemUnderTest) => systemUnderTest!.clear(),
           scenarios: [
             UnitScenario(
               examples: [
