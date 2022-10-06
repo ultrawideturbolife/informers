@@ -1,7 +1,7 @@
-import 'package:example/views/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:informers/informer.dart';
 
+import '../../main.dart';
 import '../examples/feature_example.dart';
 import '../examples/method_example.dart';
 

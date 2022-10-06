@@ -5,7 +5,7 @@ import 'package:example/widgets/util/controller_box.dart';
 import 'package:flutter/material.dart';
 import 'package:informers/informer.dart';
 
-import '../../views/home_view_model.dart';
+import '../../main.dart';
 
 class ListInformerExample extends StatefulWidget {
   const ListInformerExample({

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:informers/informer.dart';
 
 import '../../data/constants/const_durations.dart';
-import '../../views/home_view_model.dart';
+import '../../main.dart';
 import '../examples/feature_example.dart';
 import '../examples/method_example.dart';
 import '../util/controller_box.dart';
