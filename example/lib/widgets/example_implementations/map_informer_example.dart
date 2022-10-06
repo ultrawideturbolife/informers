@@ -27,7 +27,8 @@ class _MapInformerExampleState extends State<MapInformerExample> {
   final _putIfAbsentValueFocusNode = FocusNode();
   final Informer<String?> _updateErrorText = Informer(null, forceUpdate: false);
   final Informer<String?> _removeErrorText = Informer(null, forceUpdate: false);
-  final Informer<String?> _updateKeyErrorText = Informer(null, forceUpdate: false);
+  final Informer<String?> _updateKeyErrorText =
+      Informer(null, forceUpdate: false);
 
   @override
   void dispose() {
@@ -78,7 +79,8 @@ class _MapInformerExampleState extends State<MapInformerExample> {
   }
 
   void _tryRemove(HomeViewModel model) {
-    final success = widget.model.removeMapItem(key: _controllerBox.get(#remove).text);
+    final success =
+        widget.model.removeMapItem(key: _controllerBox.get(#remove).text);
     if (success) {
       _controllerBox.get(#remove).clear();
       _removeErrorText.update(null);
@@ -134,20 +136,23 @@ class _MapInformerExampleState extends State<MapInformerExample> {
                             const SizedBox(width: 16),
                             Expanded(
                               child: AnimatedOpacity(
-                                duration: ConstDurations.halfDefaultAnimationDuration,
+                                duration:
+                                    ConstDurations.halfDefaultAnimationDuration,
                                 opacity: mapItemsIsEmpty ? 0.3 : 1,
                                 child: IgnorePointer(
                                   ignoring: mapItemsIsEmpty,
                                   child: ElevatedButton(
                                     onPressed: widget.model.decrementMapItems,
                                     child: AnimatedDefaultTextStyle(
-                                      style: widget.model.textTheme.bodyText1!.copyWith(
+                                      style: widget.model.textTheme.bodyText1!
+                                          .copyWith(
                                         decoration: mapItemsIsEmpty
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none,
                                         color: Colors.white,
                                       ),
-                                      duration: ConstDurations.halfDefaultAnimationDuration,
+                                      duration: ConstDurations
+                                          .halfDefaultAnimationDuration,
                                       child: const Text('-'),
                                     ),
                                   ),
@@ -311,7 +316,8 @@ class _MapInformerExampleState extends State<MapInformerExample> {
                           errorText: removeErrorText,
                           alignLabelWithHint: true,
                         ),
-                        onSubmitted: (_) => _updateKeyValuedFocusNode.requestFocus(),
+                        onSubmitted: (_) =>
+                            _updateKeyValuedFocusNode.requestFocus(),
                       ),
                     ),
                     TextField(
@@ -357,7 +363,8 @@ class _MapInformerExampleState extends State<MapInformerExample> {
                         labelText: 'Key to be put',
                         alignLabelWithHint: true,
                       ),
-                      onSubmitted: (_) => _putIfAbsentValueFocusNode.requestFocus(),
+                      onSubmitted: (_) =>
+                          _putIfAbsentValueFocusNode.requestFocus(),
                     ),
                     TextField(
                       controller: _controllerBox.get(#putIfAbsentKeyValue),

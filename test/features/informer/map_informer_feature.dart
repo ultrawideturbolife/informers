@@ -54,7 +54,7 @@ class MapInformerFeature extends UnitFeature<MapInformer<String, String>> {
                   },
                 )
               ],
-            ),
+            ), // update
             UnitScenario(
               examples: [
                 const UnitExample(
@@ -68,7 +68,7 @@ class MapInformerFeature extends UnitFeature<MapInformer<String, String>> {
               description: 'Using the MapInformer.updateCurrent to update the map',
               steps: [
                 Given(
-                  'the map informer is has a starting value',
+                  'the map informer has a starting value',
                   (systemUnderTest, log, box, mocks, [example]) {
                     log.info('Fetching starting values..');
                     final startingKey = example.firstValue();
@@ -110,7 +110,7 @@ class MapInformerFeature extends UnitFeature<MapInformer<String, String>> {
                   },
                 )
               ],
-            ),
+            ), // updateCurrent
             UnitScenario(
               examples: [
                 const UnitExample(
@@ -137,7 +137,7 @@ class MapInformerFeature extends UnitFeature<MapInformer<String, String>> {
               description: 'Using the MapInformer.updateKey to update the map',
               steps: [
                 Given(
-                  'the map informer is has a starting value',
+                  'the map informer has a starting value',
                   (systemUnderTest, log, box, mocks, [example]) {
                     log.info('Fetching starting values..');
                     final startingKey = example.firstValue();
@@ -182,7 +182,185 @@ class MapInformerFeature extends UnitFeature<MapInformer<String, String>> {
                   },
                 )
               ],
-            ),
+            ), // updateKey
+            UnitScenario(
+              examples: [
+                const UnitExample(
+                  values: [
+                    MapEntry('new', 'value'),
+                  ],
+                ),
+              ],
+              description: 'Using the MapInformer.add to update the map',
+              steps: [
+                Given(
+                  'the map informer is empty',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    expect(systemUnderTest.value.isEmpty, true);
+                    log.success('MapInformer is empty!');
+                  },
+                ),
+                When(
+                  'the map informer value gets updated with a new value with MapInformer.add',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    final MapEntry<String, String> newEntry = example.firstValue();
+                    log.info(
+                        'Setting the value of the MapInformer to the new value of $newEntry..');
+                    systemUnderTest.add(newEntry.key, newEntry.value);
+                    log.success('New value set!');
+                    box.write(0, newEntry);
+                  },
+                ),
+                Then(
+                  'the map informer should have the new value as its value',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    final newValue = box.read<MapEntry<String, String>>(0);
+                    log.info(
+                        'Checking if value of MapInformer has updated to new value: $newValue.. ');
+                    final mapEntry = systemUnderTest.value.entries.single;
+                    expect(mapEntry.key, newValue.key);
+                    expect(mapEntry.value, newValue.value);
+                    log.success('MapInformer has the new value!');
+                  },
+                )
+              ],
+            ), // add
+            UnitScenario(
+              examples: [
+                const UnitExample(
+                  values: [
+                    'key',
+                    'firstValue',
+                    'key',
+                    true,
+                  ],
+                ),
+                const UnitExample(
+                  values: [
+                    'key',
+                    'firstValue',
+                    'noKey',
+                    false,
+                  ],
+                ),
+              ],
+              description: 'Using the MapInformer.remove to remove a value from the map',
+              steps: [
+                Given(
+                  'the map informer has a starting value',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    log.info('Fetching starting values..');
+                    final startingKey = example.firstValue();
+                    final startingValue = example.secondValue();
+                    systemUnderTest.update(<String, String>{startingKey: startingValue});
+                    log.info('System under test updated!');
+                    final mapEntry = systemUnderTest.value.entries.single;
+                    expect(mapEntry.key, startingKey);
+                    expect(mapEntry.value, startingValue);
+                    box.write('startingKey', startingKey);
+                    log.success('MapInformer has starting values!');
+                  },
+                ),
+                When(
+                  'the map informer gets a value removed with MapInformer.remove',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    log.info('Fetching key to be removed..');
+                    final keyToBeRemoved = example.thirdValue();
+                    log.info('Try to remove key $keyToBeRemoved..');
+                    final result = systemUnderTest.remove(keyToBeRemoved);
+                    box.write('result', result);
+                    log.success('Tried removing key $keyToBeRemoved!');
+                  },
+                ),
+                Then(
+                  'the value should be removed if the was present',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    final bool hasRemoveKey = example.fourthValue();
+                    log.info('Checking if key is present..');
+                    final valueIsRemoved = systemUnderTest.value[box.read('startingKey')] == null;
+                    expect(valueIsRemoved, hasRemoveKey);
+                    if (hasRemoveKey) {
+                      log.success('Key found!');
+                    } else {
+                      log.success('Key not found!');
+                    }
+                    log.info('Checking if remove method returned result..');
+                    expect(box.read('result') != null, hasRemoveKey);
+                    if (hasRemoveKey) {
+                      log.success('Result found!');
+                    } else {
+                      log.success('Result not found!');
+                    }
+                  },
+                )
+              ],
+            ), // remove
+            UnitScenario(
+              examples: [
+                const UnitExample(
+                  values: [
+                    'presentKey',
+                    'firstValue',
+                    'absentKey',
+                    'absentValue',
+                    true,
+                  ],
+                ),
+                const UnitExample(
+                  values: [
+                    'presentKey',
+                    'firstValue',
+                    'presentKey',
+                    'presentValue',
+                    false,
+                  ],
+                ),
+              ],
+              description: 'Using the MapInformer.putIfAbsent method to update the map',
+              steps: [
+                Given(
+                  'the map informer has a starting value',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    log.info('Fetching starting values..');
+                    final startingKey = example.firstValue();
+                    final startingValue = example.secondValue();
+                    systemUnderTest.update(<String, String>{startingKey: startingValue});
+                    log.info('System under test updated!');
+                    final mapEntry = systemUnderTest.value.entries.single;
+                    expect(mapEntry.key, startingKey);
+                    expect(mapEntry.value, startingValue);
+                    log.success('MapInformer has starting values!');
+                  },
+                ),
+                When(
+                  'the map informer gets a value update with MapInformer.putIfAbsent',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    log.info('Fetching key to be updated..');
+                    final updateKey = example.thirdValue();
+                    final valueIfAbsent = example.fourthValue();
+                    log.info('Updating key $updateKey..');
+                    final result = systemUnderTest.putIfAbsent(updateKey, valueIfAbsent);
+                    box.write('result', result);
+                    box.write('valueIfAbsent', valueIfAbsent);
+                    box.write('updateKey', updateKey);
+                    log.success('Updated key $updateKey with MapInformer.putIfAbsent!');
+                  },
+                ),
+                Then(
+                  'the key should have the value if it was not present',
+                  (systemUnderTest, log, box, mocks, [example]) {
+                    final keyWasAbsent = example.fifthValue();
+                    final result = box.read('result');
+                    final valueIfAbsent = box.read('valueIfAbsent');
+                    final updateKey = box.read('updateKey');
+                    log.success('Checking if value was absent..');
+                    expect(systemUnderTest.value[updateKey] == valueIfAbsent, keyWasAbsent);
+                    expect(result == valueIfAbsent, keyWasAbsent);
+                    log.success('Value was${keyWasAbsent ? '' : ' not'} absent');
+                  },
+                )
+              ],
+            ), // putIfAbsent
           ],
         );
 }

@@ -19,7 +19,8 @@ class InformerExample extends StatefulWidget {
 
 class _InformerExampleState extends State<InformerExample> {
   final _informerUpdateController = TextEditingController();
-  final Informer<String?> _counterErrorText = Informer(null, forceUpdate: false);
+  final Informer<String?> _counterErrorText =
+      Informer(null, forceUpdate: false);
 
   @override
   void dispose() {
@@ -92,7 +93,8 @@ class _InformerExampleState extends State<InformerExample> {
                     Expanded(
                       child: ValueListenableBuilder<String?>(
                         valueListenable: _counterErrorText,
-                        builder: (context, counterErrorText, child) => TextField(
+                        builder: (context, counterErrorText, child) =>
+                            TextField(
                           controller: _informerUpdateController,
                           decoration: InputDecoration(
                             errorText: counterErrorText,

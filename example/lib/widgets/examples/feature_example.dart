@@ -33,13 +33,15 @@ class _FeatureExampleState extends State<FeatureExample> {
     return Container(
       margin: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
       decoration: BoxDecoration(
-          color: Colors.red.withOpacity(0.2), borderRadius: BorderRadius.circular(16)),
+          color: Colors.red.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(16)),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           CustomButton(
-            onPressed: () => _isExpandedNotifier.value = !_isExpandedNotifier.value,
+            onPressed: () =>
+                _isExpandedNotifier.value = !_isExpandedNotifier.value,
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -47,7 +49,8 @@ class _FeatureExampleState extends State<FeatureExample> {
                 borderRadius: BorderRadius.circular(32),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                 child: Row(
                   children: [
                     const SizedBox(width: 32),
@@ -65,10 +68,12 @@ class _FeatureExampleState extends State<FeatureExample> {
                       width: 32,
                       child: ValueListenableBuilder<bool>(
                         valueListenable: _isExpandedNotifier,
-                        builder: (context, isExpanded, child) => AnimatedRotation(
+                        builder: (context, isExpanded, child) =>
+                            AnimatedRotation(
                           duration: ConstDurations.defaultAnimationDuration,
                           turns: isExpanded ? 0.5 : 1,
-                          child: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                          child: const Icon(Icons.keyboard_arrow_down,
+                              color: Colors.white),
                         ),
                       ),
                     ),
