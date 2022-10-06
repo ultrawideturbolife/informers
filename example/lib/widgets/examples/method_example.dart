@@ -17,16 +17,19 @@ class MethodExample extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.yellow,
             border: Border.all(color: Colors.black, width: 2),
             borderRadius: BorderRadius.circular(32),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),
