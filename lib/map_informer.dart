@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'inform_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended map capabilities.
-class MapInformer<E, T> extends InformNotifier implements ValueListenable<Map<E, T>> {
+class MapInformer<E, T> extends InformNotifier
+    implements ValueListenable<Map<E, T>> {
   MapInformer(
     this._value, {
     bool forceUpdate = true,

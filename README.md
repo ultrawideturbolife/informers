@@ -7,12 +7,6 @@ The idea for future development evolves around improving all infomrers to mimic 
 
 </aside>
 
-![1.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F302a3d2e-eb0c-4de7-8d96-65eb8eb6bf31.jpg&w=1920&q=80)
-
-![3.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F51d6cb40-f317-430d-9935-815f02ef9f1d.jpg&w=1920&q=80)
-
-![2.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F67c87b17-2fbe-4cae-bac9-7fad7386ca8d.jpg&w=1920&q=80)
-
 # 🏛 General
 
 Each type of informer (`Informer`, `ListInformer` and `MapInformer`) has access to the three variables and the one rebuild method listed below.
@@ -36,6 +30,9 @@ Each type of informer (`Informer`, `ListInformer` and `MapInformer`) has access 
 
 
 # 👾 Informer
+
+![1.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F302a3d2e-eb0c-4de7-8d96-65eb8eb6bf31.jpg&w=1920&q=80)
+
 
 Besides the general methods the main `Informer` class also has access to the following methods.
 
@@ -61,6 +58,8 @@ Besides the general methods the main `Informer` class also has access to the fol
 ![informer.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F525df097-a0c7-4772-9dd7-f3c7ae6443d4.jpg&w=1920&q=80)
 
 # 🦾 ListInformer
+
+![3.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F51d6cb40-f317-430d-9935-815f02ef9f1d.jpg&w=1920&q=80)
 
 Besides the general methods the `ListInformer` class also has access to the following methods.
 
@@ -144,6 +143,8 @@ Besides the general methods the `ListInformer` class also has access to the foll
 ![listinformer.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F9ff207af-cb78-48da-a7d1-cef02fc3945c.jpg&w=1920&q=80)
 
 # 🤖 MapInformer
+
+![2.jpg](https://app.super.so/_next/image?url=https%3A%2F%2Fsuper-static-assets.s3.amazonaws.com%2F653aa7f7-32fd-4a5c-b3cf-2044da52b531%2Fimages%2F67c87b17-2fbe-4cae-bac9-7fad7386ca8d.jpg&w=1920&q=80)
 
 Besides the general methods the `MapInformer` class also has access to the following methods.
 

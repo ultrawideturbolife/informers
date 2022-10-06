@@ -33,7 +33,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   'the list informer is at starting value',
                   (systemUnderTest, log, box, mocks, [example]) {
                     final startingValue = example.firstValue();
-                    log.info('Settings starting value of the list informer as $startingValue..');
+                    log.info(
+                        'Settings starting value of the list informer as $startingValue..');
                     systemUnderTest.update(startingValue);
                     expect(systemUnderTest.value, startingValue);
                     log.success('Starting value set!');
@@ -63,7 +64,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
               ],
             ),
             UnitScenario(
-              systemUnderTest: (mocks) => ListInformer(List.empty(growable: true)),
+              systemUnderTest: (mocks) =>
+                  ListInformer(List.empty(growable: true)),
               examples: [
                 const UnitExample(values: [
                   ['firstList'],
@@ -74,7 +76,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   'valueToBeAddedToTheList'
                 ]),
               ],
-              description: 'Using the Informer.updateCurrent to increment the current value',
+              description:
+                  'Using the Informer.updateCurrent to increment the current value',
               steps: [
                 Given(
                   'the list informer value is at starting value',
@@ -89,7 +92,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   'the list informer gets a value added with the updateCurrent method',
                   (systemUnderTest, log, box, mocks, [example]) {
                     final valueToBeAdded = example.secondValue();
-                    systemUnderTest.updateCurrent((current) => [...current, valueToBeAdded]);
+                    systemUnderTest.updateCurrent(
+                        (current) => [...current, valueToBeAdded]);
                     box.write(#valueToBeAdded, valueToBeAdded);
                   },
                 ),
@@ -97,10 +101,12 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   'the list informer should contain both the starting value and the value that was added',
                   (systemUnderTest, log, box, mocks, [example]) {
                     log.info(systemUnderTest.value.toString());
-                    for (final startingValue in box.read<List<String>>(#startingValues)) {
+                    for (final startingValue
+                        in box.read<List<String>>(#startingValues)) {
                       expect(systemUnderTest.contains(startingValue), true);
                     }
-                    expect(systemUnderTest.contains(box.read(#valueToBeAdded)), true);
+                    expect(systemUnderTest.contains(box.read(#valueToBeAdded)),
+                        true);
                   },
                 ),
               ],
@@ -147,11 +153,13 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
               ],
             ),
             UnitScenario(
-              description: 'Using the ListInformer.remove method to remove a value',
+              description:
+                  'Using the ListInformer.remove method to remove a value',
               examples: [
                 UnitExample(
                   values: [
-                    List<String>.from(['start', 'middle', 'end'], growable: true),
+                    List<String>.from(['start', 'middle', 'end'],
+                        growable: true),
                     'end',
                   ],
                 )
@@ -172,7 +180,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                 When(
                   'the ListInformer gets its values updated with the ListInformer.removed method',
                   (systemUnderTest, log, box, mocks, [example]) {
-                    log.info('Removing value with the ListInformer.remove method..');
+                    log.info(
+                        'Removing value with the ListInformer.remove method..');
                     final valueToBeRemoved = example.secondValue();
                     systemUnderTest.remove(valueToBeRemoved);
                     log.success('Value removed!');
@@ -188,11 +197,13 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
               ],
             ),
             UnitScenario(
-              description: 'Using the ListInformer.removeLast method to remove a value',
+              description:
+                  'Using the ListInformer.removeLast method to remove a value',
               examples: [
                 UnitExample(
                   values: [
-                    List<String>.from(['start', 'middle', 'end'], growable: true),
+                    List<String>.from(['start', 'middle', 'end'],
+                        growable: true),
                   ],
                 )
               ],
@@ -212,7 +223,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                 When(
                   'the ListInformer gets its last value removed with the ListInformer.removeLast method',
                   (systemUnderTest, log, box, mocks, [example]) {
-                    log.info('Removing value with the ListInformer.remove method..');
+                    log.info(
+                        'Removing value with the ListInformer.remove method..');
                     final valueThatWasRemoved = systemUnderTest.removeLast();
                     box.write(1, valueThatWasRemoved);
                     log.success('Last value removed!');
@@ -227,17 +239,20 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
               ],
             ),
             UnitScenario(
-              description: 'Using the ListInformer.updateFirstWhereOrNull method to remove a value',
+              description:
+                  'Using the ListInformer.updateFirstWhereOrNull method to remove a value',
               examples: [
                 UnitExample(
                   values: [
-                    List<String>.from(['start', 'middle', 'end'], growable: true),
+                    List<String>.from(['start', 'middle', 'end'],
+                        growable: true),
                     ['end', 'anotherMiddle']
                   ],
                 ),
                 UnitExample(
                   values: [
-                    List<String>.from(['start', 'middle', 'end'], growable: true),
+                    List<String>.from(['start', 'middle', 'end'],
+                        growable: true),
                     ['thisWillNotUpdate', 'noItWont']
                   ],
                 ),
@@ -260,7 +275,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   (systemUnderTest, log, box, mocks, [example]) {
                     log.info(
                         'Updating ListInformer values with Informer.updateFirstWhereOrNull method..');
-                    final List<String> valuesToBeUpdated = example.secondValue();
+                    final List<String> valuesToBeUpdated =
+                        example.secondValue();
                     final result = systemUnderTest.updateFirstWhereOrNull(
                       (value) => value == valuesToBeUpdated.first,
                       (_) => valuesToBeUpdated.last,
@@ -279,8 +295,10 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
               ],
             ),
             UnitScenario(
-              description: 'existing value should notifyListeners when forceUpdate is true',
-              systemUnderTest: (mocks) => ListInformer<String>([], forceUpdate: true),
+              description:
+                  'existing value should notifyListeners when forceUpdate is true',
+              systemUnderTest: (mocks) =>
+                  ListInformer<String>([], forceUpdate: true),
               setUpEach: (mocks, systemUnderTest) {
                 final mock = NotifyMock();
                 systemUnderTest.update(['start']);
@@ -288,7 +306,8 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                 mocks.write(mock);
               },
               tearDownEach: (mocks, systemUnderTest) {
-                systemUnderTest.removeListener(mocks.read<NotifyMock>(NotifyMock).notifyListeners);
+                systemUnderTest.removeListener(
+                    mocks.read<NotifyMock>(NotifyMock).notifyListeners);
               },
               steps: [
                 Given(
@@ -303,19 +322,22 @@ class ListInformerFeature extends UnitFeature<ListInformer<String>> {
                   'with the same value, '
                   'while forceUpdate is true',
                   (systemUnderTest, log, box, mocks, [example]) {
-                    log.info('Updating the ListInformer with the current value');
+                    log.info(
+                        'Updating the ListInformer with the current value');
                     final startingValue = systemUnderTest.value;
                     systemUnderTest.update(startingValue);
                     expect(systemUnderTest.value, startingValue);
                     systemUnderTest.updateCurrent((current) => current);
                     expect(systemUnderTest.value, startingValue);
-                    log.success('System under test has same value after update!');
+                    log.success(
+                        'System under test has same value after update!');
                   },
                 ),
                 Then(
                   'notifyListeners should have been called twice despite it being the value',
                   (systemUnderTest, log, box, mocks, [example]) {
-                    verify(mocks.read<NotifyMock>(NotifyMock).notifyListeners()).called(2);
+                    verify(mocks.read<NotifyMock>(NotifyMock).notifyListeners())
+                        .called(2);
                   },
                 )
               ],
