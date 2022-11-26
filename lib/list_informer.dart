@@ -6,7 +6,7 @@ class ListInformer<T> extends InformNotifier
     implements ValueListenable<List<T>> {
   ListInformer(
     this._value, {
-    bool forceUpdate = true,
+    bool forceUpdate = false,
   }) : _forceUpdate = forceUpdate;
 
   /// Current list of the informer.

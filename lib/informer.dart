@@ -5,7 +5,7 @@ import 'package:informers/inform_notifier.dart';
 class Informer<T> extends InformNotifier implements ValueListenable<T> {
   Informer(
     this._value, {
-    bool forceUpdate = true,
+    bool forceUpdate = false,
   }) : _forceUpdate = forceUpdate;
 
   /// Current value of the informer.

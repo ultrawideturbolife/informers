@@ -1,3 +1,7 @@
+## 0.0.1+6
+
+* **⚠️ Breaking:** Changed default `forceUpdate` behaviour of all informers to false.
+
 ## 0.0.1+5
 
 * Update example project.

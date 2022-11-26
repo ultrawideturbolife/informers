@@ -7,7 +7,7 @@ class MapInformer<E, T> extends InformNotifier
     implements ValueListenable<Map<E, T>> {
   MapInformer(
     this._value, {
-    bool forceUpdate = true,
+    bool forceUpdate = false,
   }) : _forceUpdate = forceUpdate;
 
   /// Current map of the informer.
