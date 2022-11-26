@@ -22,47 +22,72 @@ class ListInformer<T> extends InformNotifier
   final bool _forceUpdate;
 
   /// Setter of the current list of the informer.
-  void update(List<T> value) {
+  void update(
+    List<T> value, {
+    bool doNotifyListeners = true,
+  }) {
     if (_forceUpdate || _value != value) {
       _value = value;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
   /// Provides current list and updates the list of the informer with received list.
-  void updateCurrent(List<T> Function(List<T> current) current) {
+  void updateCurrent(
+    List<T> Function(List<T> current) current, {
+    bool doNotifyListeners = true,
+  }) {
     final newValue = current(_value);
     if (_forceUpdate || _value != newValue) {
       _value = newValue;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
   /// Adds a value to the list.
-  void add(T value) {
+  void add(
+    T value, {
+    bool doNotifyListeners = true,
+  }) {
     _value.add(value);
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
   }
 
   /// Removes a value from the list.
-  bool remove(T value) {
+  bool remove(
+    T value, {
+    bool doNotifyListeners = true,
+  }) {
     final _result = _value.remove(value);
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
     return _result;
   }
 
   /// Removes the last value from the list.
-  T removeLast() {
+  T removeLast({
+    bool doNotifyListeners = true,
+  }) {
     final _removed = _value.removeLast();
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
     return _removed;
   }
 
   /// Updates the first value that meets the criteria with given [update].
   T? updateFirstWhereOrNull(
     bool Function(T value) test,
-    T Function(T value) update,
-  ) {
+    T Function(T value) update, {
+    bool doNotifyListeners = true,
+  }) {
     int? _index;
     T? toBeUpdated;
     for (int index = 0; index < _value.length; index++) {
@@ -75,7 +100,9 @@ class ListInformer<T> extends InformNotifier
     if (toBeUpdated != null) {
       final updated = update(toBeUpdated);
       _value[_index!] = updated;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
       return updated;
     }
     return null;
@@ -91,9 +118,13 @@ class ListInformer<T> extends InformNotifier
   bool contains(T value) => _value.contains(value);
 
   /// Clears [_value] of any values.
-  void clear() {
+  void clear({
+    bool doNotifyListeners = true,
+  }) {
     _value.clear();
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
   }
 
   @override

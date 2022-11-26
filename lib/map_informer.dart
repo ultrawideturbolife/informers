@@ -24,52 +24,90 @@ class MapInformer<E, T> extends InformNotifier
   Map<E, T> get value => _value;
 
   /// Setter of the current map of the informer.
-  void update(Map<E, T> value) {
+  void update(
+    Map<E, T> value, {
+    bool doNotifyListeners = true,
+  }) {
     if (_forceUpdate || _value != value) {
       _value = value;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
   /// Provides current map and updates the map of the informer with received map.
-  void updateCurrent(Map<E, T> Function(Map<E, T> current) current) {
+  void updateCurrent(
+    Map<E, T> Function(Map<E, T> current) current, {
+    bool doNotifyListeners = true,
+  }) {
     final newValue = current(_value);
     if (_forceUpdate || _value != newValue) {
       _value = newValue;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
   /// Updates the value for the provided [key] nu calling the [Map.update] method.
-  void updateKey(E key, T Function(T value) update, {T Function()? ifAbsent}) {
+  void updateKey(
+    E key,
+    T Function(T value) update, {
+    T Function()? ifAbsent,
+    bool doNotifyListeners = true,
+  }) {
     _value = _value..update(key, update, ifAbsent: ifAbsent);
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
   }
 
   /// Assigns [value] to [key].
-  void add(E key, T value) {
+  void add(
+    E key,
+    T value, {
+    bool doNotifyListeners = true,
+  }) {
     _value[key] = value;
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
   }
 
   /// Removes [key] from [_value].
-  T? remove(E key) {
+  T? remove(
+    E key, {
+    bool doNotifyListeners = true,
+  }) {
     final removed = _value.remove(key);
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
     return removed;
   }
 
   /// Performs a [Map.putIfAbsent] and returns its return value.
-  T putIfAbsent(E key, T value) {
+  T putIfAbsent(
+    E key,
+    T value, {
+    bool doNotifyListeners = true,
+  }) {
     final _returnValue = _value.putIfAbsent(key, () => value);
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
     return _returnValue;
   }
 
   /// Clears [_value] of any values.
-  void clear() {
+  void clear({
+    bool doNotifyListeners = true,
+  }) {
     _value.clear();
-    notifyListeners();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
   }
 
   @override

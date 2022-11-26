@@ -1,6 +1,6 @@
 name: informers
 description: A simple package that copies and tries to improve the behaviour of Flutter's ValueNotifier.
-version: 0.0.1+6
+version: 0.0.2
 homepage: https://github.com/codaveto/informers
 
 environment:

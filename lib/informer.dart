@@ -21,19 +21,29 @@ class Informer<T> extends InformNotifier implements ValueListenable<T> {
   final bool _forceUpdate;
 
   /// Setter of the current value of the informer.
-  void update(T value) {
+  void update(
+    T value, {
+    bool doNotifyListeners = true,
+  }) {
     if (_forceUpdate || _value != value) {
       _value = value;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
   /// Provides current value and updates it with received value.
-  void updateCurrent(T Function(T value) current) {
+  void updateCurrent(
+    T Function(T value) current, {
+    bool doNotifyListeners = true,
+  }) {
     final newValue = current(_value);
     if (_forceUpdate || _value != newValue) {
       _value = newValue;
-      notifyListeners();
+      if (doNotifyListeners) {
+        notifyListeners();
+      }
     }
   }
 
