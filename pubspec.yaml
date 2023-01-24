@@ -1,6 +1,6 @@
 name: informers
 description: A simple package that copies and tries to improve the behaviour of Flutter's ValueNotifier.
-version: 0.0.2
+version: 0.0.2+1
 homepage: https://github.com/codaveto/informers
 
 environment:
@@ -14,8 +14,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
-  gherkin_unit_test: ^0.0.4+7
+  flutter_lints: ^2.0.1
+  gherkin_unit_test: ^0.0.5
   mockito: ^5.3.2
 
 # For information on the generic Dart part of this file, see the
