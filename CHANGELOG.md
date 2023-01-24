@@ -1,3 +1,7 @@
+## 0.0.2+1
+
+* **🐛️ Bugfix:** Improve equality check when using `MapInformer.updateCurrent` and `ListInformer.updateCurrent`.
+
 ## 0.0.2
 
 * **⚠️ Breaking:** Changed default `forceUpdate` behaviour of all informers to false.

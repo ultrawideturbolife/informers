@@ -39,8 +39,8 @@ class ListInformer<T> extends InformNotifier
     List<T> Function(List<T> current) current, {
     bool doNotifyListeners = true,
   }) {
-    final newValue = current(_value);
-    if (_forceUpdate || _value != newValue) {
+    final newValue = current(List.from(_value));
+    if (_forceUpdate || listEquals(_value, newValue)) {
       _value = newValue;
       if (doNotifyListeners) {
         notifyListeners();

@@ -41,8 +41,8 @@ class MapInformer<E, T> extends InformNotifier
     Map<E, T> Function(Map<E, T> current) current, {
     bool doNotifyListeners = true,
   }) {
-    final newValue = current(_value);
-    if (_forceUpdate || _value != newValue) {
+    final newValue = current(Map.from(_value));
+    if (_forceUpdate || !mapEquals(_value, newValue)) {
       _value = newValue;
       if (doNotifyListeners) {
         notifyListeners();
