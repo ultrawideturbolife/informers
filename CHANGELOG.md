@@ -1,3 +1,7 @@
+## 0.0.2+4
+
+* **✨ New:** Added `MaxLengthListInformer.addAll` and `ListInformer.addAll` methods.
+
 ## 0.0.2+3
 
 * **✨ New:** Added `MaxLengthListInformer` class.

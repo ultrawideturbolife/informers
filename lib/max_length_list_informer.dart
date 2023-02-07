@@ -33,7 +33,7 @@ class MaxLengthListInformer<T> extends InformNotifier
   }) {
     if (_forceUpdate || _value != value) {
       _value = value;
-      _checkAndRemoveDifference();
+      _checkAndRemoveLowerDifference();
       if (doNotifyListeners) {
         notifyListeners();
       }
@@ -48,7 +48,7 @@ class MaxLengthListInformer<T> extends InformNotifier
     final newValue = current(List.from(_value));
     if (_forceUpdate || listEquals(_value, newValue)) {
       _value = newValue;
-      _checkAndRemoveDifference();
+      _checkAndRemoveLowerDifference();
       if (doNotifyListeners) {
         notifyListeners();
       }
@@ -61,7 +61,19 @@ class MaxLengthListInformer<T> extends InformNotifier
     bool doNotifyListeners = true,
   }) {
     _value.add(value);
-    _checkAndRemoveDifference();
+    _checkAndRemoveLowerDifference();
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
+  }
+
+  /// Adds all values to the list.
+  void addAll(
+    Iterable<T> values, {
+    bool doNotifyListeners = true,
+  }) {
+    _value.addAll(values);
+    _checkAndRemoveLowerDifference();
     if (doNotifyListeners) {
       notifyListeners();
     }
@@ -136,7 +148,7 @@ class MaxLengthListInformer<T> extends InformNotifier
   }
 
   /// Removes any items that exceed [_maxLength].
-  void _checkAndRemoveDifference() {
+  void _checkAndRemoveLowerDifference() {
     if (_value.length > _maxLength) {
       final difference = _maxLength - _value.length;
       for (int x = 0; x < difference; x++) {

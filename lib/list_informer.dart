@@ -59,6 +59,17 @@ class ListInformer<T> extends InformNotifier
     }
   }
 
+  /// Adds all values to the list.
+  void addAll(
+    Iterable<T> values, {
+    bool doNotifyListeners = true,
+  }) {
+    _value.addAll(values);
+    if (doNotifyListeners) {
+      notifyListeners();
+    }
+  }
+
   /// Removes a value from the list.
   bool remove(
     T value, {
