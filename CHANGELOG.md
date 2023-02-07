@@ -1,3 +1,11 @@
+## 0.0.2+3
+
+* **✨ New:** Added `MaxLengthListInformer` class.
+
+## 0.0.2+2
+
+* **✨ New:** Added `SetInformer` class.
+
 ## 0.0.2+1
 
 * **🐛️ Bugfix:** Improve equality check when using `MapInformer.updateCurrent` and `ListInformer.updateCurrent`.

@@ -2,12 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:informers/inform_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended list capabilities.
-class ListInformer<T> extends InformNotifier
+class MaxLengthListInformer<T> extends InformNotifier
     implements ValueListenable<List<T>> {
-  ListInformer(
+  MaxLengthListInformer(
     this._value, {
     bool forceUpdate = false,
-  }) : _forceUpdate = forceUpdate;
+    int maxLength = 50,
+  })  : _forceUpdate = forceUpdate,
+        _maxLength = maxLength;
 
   /// Current list of the informer.
   List<T> _value;
@@ -21,6 +23,9 @@ class ListInformer<T> extends InformNotifier
   /// Even though the value might be the same.
   final bool _forceUpdate;
 
+  /// Maximum length of the list.
+  final int _maxLength;
+
   /// Setter of the current list of the informer.
   void update(
     List<T> value, {
@@ -28,6 +33,7 @@ class ListInformer<T> extends InformNotifier
   }) {
     if (_forceUpdate || _value != value) {
       _value = value;
+      _checkAndRemoveDifference();
       if (doNotifyListeners) {
         notifyListeners();
       }
@@ -42,6 +48,7 @@ class ListInformer<T> extends InformNotifier
     final newValue = current(List.from(_value));
     if (_forceUpdate || listEquals(_value, newValue)) {
       _value = newValue;
+      _checkAndRemoveDifference();
       if (doNotifyListeners) {
         notifyListeners();
       }
@@ -54,6 +61,7 @@ class ListInformer<T> extends InformNotifier
     bool doNotifyListeners = true,
   }) {
     _value.add(value);
+    _checkAndRemoveDifference();
     if (doNotifyListeners) {
       notifyListeners();
     }
@@ -127,8 +135,18 @@ class ListInformer<T> extends InformNotifier
     }
   }
 
+  /// Removes any items that exceed [_maxLength].
+  void _checkAndRemoveDifference() {
+    if (_value.length > _maxLength) {
+      final difference = _maxLength - _value.length;
+      for (int x = 0; x < difference; x++) {
+        _value.removeAt(0);
+      }
+    }
+  }
+
   @override
   String toString() {
-    return 'ListInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
+    return 'MaxLengthListInformer{_value: $_value, _forceUpdate: $_forceUpdate, _maxLength: $_maxLength}';
   }
 }

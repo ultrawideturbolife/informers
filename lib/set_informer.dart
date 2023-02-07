@@ -2,19 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:informers/inform_notifier.dart';
 
 /// Altered version of Flutter's [ValueNotifier] with extended list capabilities.
-class ListInformer<T> extends InformNotifier
-    implements ValueListenable<List<T>> {
-  ListInformer(
+class SetInformer<T> extends InformNotifier implements ValueListenable<Set<T>> {
+  SetInformer(
     this._value, {
     bool forceUpdate = false,
   }) : _forceUpdate = forceUpdate;
 
   /// Current list of the informer.
-  List<T> _value;
+  Set<T> _value;
 
   /// Getter of the current list of the informer.
   @override
-  List<T> get value => _value;
+  Set<T> get value => _value;
 
   /// Indicates whether the informer should always update the value and [notifyListeners] when calling the [update] and [updateCurrent] methods.
   ///
@@ -23,7 +22,7 @@ class ListInformer<T> extends InformNotifier
 
   /// Setter of the current list of the informer.
   void update(
-    List<T> value, {
+    Set<T> value, {
     bool doNotifyListeners = true,
   }) {
     if (_forceUpdate || _value != value) {
@@ -36,11 +35,11 @@ class ListInformer<T> extends InformNotifier
 
   /// Provides current list and updates the list of the informer with received list.
   void updateCurrent(
-    List<T> Function(List<T> current) current, {
+    Set<T> Function(Set<T> current) current, {
     bool doNotifyListeners = true,
   }) {
-    final newValue = current(List.from(_value));
-    if (_forceUpdate || listEquals(_value, newValue)) {
+    final newValue = current(Set.from(_value));
+    if (_forceUpdate || setEquals(_value, newValue)) {
       _value = newValue;
       if (doNotifyListeners) {
         notifyListeners();
@@ -75,37 +74,12 @@ class ListInformer<T> extends InformNotifier
   T removeLast({
     bool doNotifyListeners = true,
   }) {
-    final removed = _value.removeLast();
+    final last = _value.last;
+    _value.remove(last);
     if (doNotifyListeners) {
       notifyListeners();
     }
-    return removed;
-  }
-
-  /// Updates the first value that meets the criteria with given [update].
-  T? updateFirstWhereOrNull(
-    bool Function(T value) test,
-    T Function(T value) update, {
-    bool doNotifyListeners = true,
-  }) {
-    int? localIndex;
-    T? toBeUpdated;
-    for (int index = 0; index < _value.length; index++) {
-      final value = _value[index];
-      if (test(value)) {
-        localIndex = index;
-        toBeUpdated = value;
-      }
-    }
-    if (toBeUpdated != null) {
-      final updated = update(toBeUpdated);
-      _value[localIndex!] = updated;
-      if (doNotifyListeners) {
-        notifyListeners();
-      }
-      return updated;
-    }
-    return null;
+    return last;
   }
 
   /// Whether the [_value] is empty.
@@ -129,6 +103,6 @@ class ListInformer<T> extends InformNotifier
 
   @override
   String toString() {
-    return 'ListInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
+    return 'SetInformer{_value: $_value, _forceUpdate: $_forceUpdate}';
   }
 }

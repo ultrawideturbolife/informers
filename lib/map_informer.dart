@@ -93,11 +93,11 @@ class MapInformer<E, T> extends InformNotifier
     T value, {
     bool doNotifyListeners = true,
   }) {
-    final _returnValue = _value.putIfAbsent(key, () => value);
+    final returnValue = _value.putIfAbsent(key, () => value);
     if (doNotifyListeners) {
       notifyListeners();
     }
-    return _returnValue;
+    return returnValue;
   }
 
   /// Clears [_value] of any values.
