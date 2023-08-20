@@ -28,7 +28,7 @@ class MapInformer<E, T> extends InformNotifier
     Map<E, T> value, {
     bool doNotifyListeners = true,
   }) {
-    if (_forceUpdate || _value != value) {
+    if (_forceUpdate || !mapEquals(_value, value)) {
       _value = value;
       if (doNotifyListeners) {
         notifyListeners();

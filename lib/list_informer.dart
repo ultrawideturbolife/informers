@@ -26,7 +26,7 @@ class ListInformer<T> extends InformNotifier
     List<T> value, {
     bool doNotifyListeners = true,
   }) {
-    if (_forceUpdate || _value != value) {
+    if (_forceUpdate || !listEquals(_value, value)) {
       _value = value;
       if (doNotifyListeners) {
         notifyListeners();
@@ -40,7 +40,7 @@ class ListInformer<T> extends InformNotifier
     bool doNotifyListeners = true,
   }) {
     final newValue = current(List.from(_value));
-    if (_forceUpdate || listEquals(_value, newValue)) {
+    if (_forceUpdate || !listEquals(_value, newValue)) {
       _value = newValue;
       if (doNotifyListeners) {
         notifyListeners();

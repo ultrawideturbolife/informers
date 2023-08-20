@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:informers/informer.dart';
 import 'package:informers/list_informer.dart';
 import 'package:informers/map_informer.dart';
-import 'package:veto/base_view_model.dart';
+import 'package:veto/data/models/base_view_model.dart';
 
 import 'data/constants/const_values.dart';
 

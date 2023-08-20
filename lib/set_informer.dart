@@ -25,7 +25,7 @@ class SetInformer<T> extends InformNotifier implements ValueListenable<Set<T>> {
     Set<T> value, {
     bool doNotifyListeners = true,
   }) {
-    if (_forceUpdate || _value != value) {
+    if (_forceUpdate || !setEquals(_value, value)) {
       _value = value;
       if (doNotifyListeners) {
         notifyListeners();
@@ -39,7 +39,7 @@ class SetInformer<T> extends InformNotifier implements ValueListenable<Set<T>> {
     bool doNotifyListeners = true,
   }) {
     final newValue = current(Set.from(_value));
-    if (_forceUpdate || setEquals(_value, newValue)) {
+    if (_forceUpdate || !setEquals(_value, newValue)) {
       _value = newValue;
       if (doNotifyListeners) {
         notifyListeners();

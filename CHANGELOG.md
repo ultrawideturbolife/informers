@@ -1,3 +1,10 @@
+## 0.0.3+1
+* **🐛️ Bugfix:** Fixed `MapInformer` and `ListInformer` not notifying listeners unless `forceUpdate` was set to `true`.
+* 
+## 0.0.3
+
+* **🐛️ Bugfix:** Fixed `MapInformer` and `ListInformer` not notifying listeners unless `forceUpdate` was set to `true`.
+
 ## 0.0.2+4
 
 * **✨ New:** Added `MaxLengthListInformer.addAll` and `ListInformer.addAll` methods.
